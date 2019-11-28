@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: cpv-to-pvlib
+Version: 0.0.0
+Summary: A cpv module that could be added to pvlib.
+Home-page: UNKNOWN
+Author: Inia Steinbach
+Author-email: inia.steinbach@rl-institut.de
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Provides-Extra: dev
