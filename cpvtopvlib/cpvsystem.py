@@ -5,6 +5,7 @@ performance of CPV modules.
 
 import numpy as np
 import math
+import pandas as pd
 
 from pvlib import pvsystem
 from pvlib import atmosphere, irradiance
@@ -800,7 +801,7 @@ def get_simple_util_factor(x, thld, m_low, m_high):
 
     Parameters
     ----------
-    x : numeric / array-like
+    x : numeric / pd.Series
         variable value(s) for the utilization factor calc.
 
     thld : numeric
@@ -817,19 +818,17 @@ def get_simple_util_factor(x, thld, m_low, m_high):
     single_uf : numeric
         utilization factor for the x variable.
     """
-    if not isinstance(x, np.ndarray):
-        x = np.array(x, ndmin=1)
+    simple_uf=pd.Series()
+    if not isinstance(x, pd.Series):
+        simple_uf = 1 + (x - thld) * m_low
 
-    suf = []
+    else:
+        for index, value in x.items():
+            if value <= thld:
+                simple_uf.index = 1 + (value - thld) * m_low
+            else:
+                simple_uf.index = 1 + (value - thld) * m_high
 
-    for i in range(len(x)):
-        if x[i] <= thld:
-            simple_uf = 1 + (x[i] - thld) * m_low
-        else:
-            simple_uf = 1 + (x[i] - thld) * m_high
-
-        suf.append(simple_uf)
-
-    return suf
+    return simple_uf
 
 
