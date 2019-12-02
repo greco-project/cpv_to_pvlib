@@ -8,40 +8,6 @@ import pandas as pd
 
 
 
-
-
-def get_single_util_factor(x, thld, m_low, m_high):
-    """
-    Retrieves the utilization factor for a variable.
-
-    Parameters
-    ----------
-    x : variable value for the utilization factor calc.
-
-    thld : numeric
-        limit between the two regression lines of the utilization factor.
-
-    m_low : numeric
-        inclination of the first regression line of the utilization factor.
-
-    m_high : numeric
-        inclination of the second regression line of the utilization factor.
-
-    Returns
-    -------
-    single_uf : numeric
-        utilization factor for the x variable.
-    """
-
-    if x <= thld:
-        single_uf = 1 + (x - thld) * m_low
-
-    else:
-        single_uf = 1 + (x - thld) * m_high
-
-    return single_uf
-
-
 def calc_uf_lines(x, y, datatype = 'airmass', limit = 200):
     """
     Calculates the parameters of two regression lines for a utilization factor
