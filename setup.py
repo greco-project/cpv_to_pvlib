@@ -9,14 +9,14 @@ def read(fname):
 
 
 setup(
-    name='cpv_to_pvlib',
+    name='cpvtopvlib',
     author='Inia Steinbach',
     author_email='inia.steinbach@rl-institut.de',
     description='A cpv module that could be added to pvlib.',
-    namespace_package=['cpv_to_pvlib'],
+    namespace_package=['cpvtopvlib'],
     long_description=read('README.rst'),
     packages=find_packages(),
-    package_dir={'cpv_to_pvlib': 'cpv_to_pvlib'},
+    package_dir={'cpvtopvlib': 'cpvtopvlib'},
     extras_require={
           'dev': ['sphinx', 'sphinx_rtd_theme', 'requests']},
     install_requires=[
