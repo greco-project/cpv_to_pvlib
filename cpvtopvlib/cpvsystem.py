@@ -11,6 +11,7 @@ from pvlib import pvsystem
 from pvlib import atmosphere, irradiance
 from pvlib.tools import _build_kwargs
 from pvlib.location import Location
+from pvlib.temperature import pvsyst_cell, TEMPERATURE_MODEL_PARAMETERS
 
 
 
@@ -154,12 +155,11 @@ class CPVSystem(object):
         See pvsystem.pvsyst_celltemp for details
         """
 
-        kwargs = _build_kwargs(['eta_m', 'alpha_absorption'],
-                               self.module_parameters)
+        params = TEMPERATURE_MODEL_PARAMETERS['pvsyst'][self.racking_model]
 
-        return pvsystem.pvsyst_celltemp(poa_global, temp_air, wind_speed,
-                                        model_params=self.racking_model,
-                                        **kwargs)
+        return pvsystem.temperature.pvsyst_cell(poa_global, temp_air,
+                                         wind_speed=1.0, **params)
+
 
     def singlediode(self, photocurrent, saturation_current,
                     resistance_series, resistance_shunt, nNsVth,
@@ -203,6 +203,29 @@ class CPVSystem(object):
         glass_transmission = (1.0 - Reff + glass_ar_offset) ** 2
 
         return glass_transmission
+
+
+    def optical_transmission_losses(self, aoi):
+
+        '''
+        optical transmission losses caused by the lens
+        :param numeric: dni at a certain timestep
+        :param numeric: aoi at a certain timestep
+        :return: float, new dni minus optical tranmission losses
+        '''
+
+        c0 = 4.54545455e-09
+        c1 = -2.21212121e-06
+        c2 = 8.09090909e-05
+        c3 = -2.68463203e-03
+        c4 = 8.62948052e-01
+
+        if aoi >= 60:
+            return 0
+        else:
+            ot = c4 + c3 * aoi + c2 * aoi ** 2 + c1 * aoi ** 3 + c0 * aoi ** 4
+            return ot
+
 
     def get_am_util_factor(self, airmass, am_thld, am_uf_m_low, am_uf_m_high):
         """
