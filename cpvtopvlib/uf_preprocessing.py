@@ -5,6 +5,8 @@ from sklearn.metrics import mean_squared_error
 import math
 import pandas as pd
 
+from cpvtopvlib import cpvsystem
+
 
 
 
@@ -280,7 +282,7 @@ def calculate_UF(data, filter=False, plot_UF=True):
 
     uf_temp = pd.Series()
     for i, row in data.iterrows():
-        uf_temp[i]=get_single_util_factor(row['temp'], thld_temp,
+        uf_temp[i]=cpvsystem.get_simple_util_factor(row['temp'], thld_temp,
                                                 m_low_temp/ IscDNI_top, m_high_temp/ IscDNI_top)
 
 
